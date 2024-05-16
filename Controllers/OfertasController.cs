@@ -24,9 +24,9 @@ namespace MindoTeamAPI.Controllers
 
         [HttpPost]
         [Route("/ofertas/estrellas")]
-        public PruebasApi obtenerPruebasPorEstrella(int estrellas)
+        public List<PruebasApi> obtenerPruebasPorEstrella(int estrellas)
         {
-            return pruebasAPIDA.obtenerPrueba(estrellas);
+            return pruebasAPIDA.obtenerOfertasPorEstrellas(estrellas);
         }
 
         [HttpPost]
