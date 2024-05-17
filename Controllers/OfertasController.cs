@@ -12,35 +12,29 @@ namespace MindoTeamAPI.Controllers
 
         [HttpGet]
         [Route("/ofertas")]
-        public List<PruebasApi> obtenerTodos()
+        public List<StageApi> obtenerTodas()
         {
-            return pruebasAPIDA.obtenerTodos();
+            return stageAPIDA.obtenerTodas();
         }
 
-        [HttpGet]
-        [Route("/ofertas/{id}")]
-        public PruebasApi obtenerPrueba(int id)
+        [HttpPost]
+        [Route("/ofertas/fecha")]
+        public List<StageApi> obtenerOfertasPorFecha([FromBody] string fecha)
         {
-            return pruebasAPIDA.obtenerPrueba(id);
+            return stageAPIDA.obtenerOfertasPorFecha(fecha);
         }
 
         [HttpPost]
         [Route("/ofertas/estrellas")]
-        public List<PruebasApi> obtenerPruebasPorEstrella(int estrellas)
+        public List<StageApi> obtenerPruebasPorEstrella([FromBody]int estrellas)
         {
-            return pruebasAPIDA.obtenerOfertasPorEstrellas(estrellas);
+            return stageAPIDA.obtenerOfertasPorEstrellas(estrellas);
         }
 
-        [HttpPost]
-        [Route("/ofertas/hotel")]
-        public List<PruebasApi> obtenerPruebasPorHotel(string Hotel)
-        {
-            return pruebasAPIDA.obtenerOfertasPorHotel(Hotel);
-        }
 
         [HttpPost]
-        [Route("/ofertas/promedio")]
-        public Dictionary<string, float> obtenerPreciosPromedio(List<string> hoteles)
+        [Route("/ofertas/promedios")]
+        public Dictionary<string, float> obtenerPreciosPromedio([FromBody]List<string> hoteles)
         {
             return stageAPIDA.obtenerPreciosPromedio(hoteles);
         }
