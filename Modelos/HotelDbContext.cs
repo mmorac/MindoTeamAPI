@@ -15,6 +15,12 @@ public partial class HotelDbContext : DbContext
     {
     }
 
+    public virtual DbSet<MeDApiEstrella> MeDApiEstrellas { get; set; }
+
+    public virtual DbSet<MeDApiHabitacion> MeDApiHabitacions { get; set; }
+
+    public virtual DbSet<MeDApiHotel> MeDApiHotels { get; set; }
+
     public virtual DbSet<MeaDCentralAgency> MeaDCentralAgencies { get; set; }
 
     public virtual DbSet<MeaDChannel> MeaDChannels { get; set; }
@@ -41,7 +47,11 @@ public partial class HotelDbContext : DbContext
 
     public virtual DbSet<StageAnonimizado> StageAnonimizados { get; set; }
 
+    public virtual DbSet<StageApi> StageApis { get; set; }
+
     public virtual DbSet<StageApi1> StageApi1s { get; set; }
+
+    public virtual DbSet<ThApi> ThApis { get; set; }
 
     public virtual DbSet<TransformedDataUsedForEdum> TransformedDataUsedForEda { get; set; }
 
@@ -51,6 +61,44 @@ public partial class HotelDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<MeDApiEstrella>(entity =>
+        {
+            entity.HasKey(e => e.Estrella).HasName("PK_ME_API_Estrella");
+
+            entity.ToTable("ME_D_API_Estrella");
+
+            entity.Property(e => e.Estrella).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<MeDApiHabitacion>(entity =>
+        {
+            entity.HasKey(e => e.IdHabitacion).HasName("PK_ME_API_Habitacion");
+
+            entity.ToTable("ME_D_API_Habitacion");
+
+            entity.Property(e => e.IdHabitacion)
+                .ValueGeneratedNever()
+                .HasColumnName("ID_Habitacion");
+            entity.Property(e => e.TipoHabitación)
+                .HasMaxLength(2000)
+                .HasColumnName("Tipo_Habitación");
+        });
+
+        modelBuilder.Entity<MeDApiHotel>(entity =>
+        {
+            entity.HasKey(e => e.IdHotel).HasName("PK_ME_API_Hotel");
+
+            entity.ToTable("ME_D_API_Hotel");
+
+            entity.Property(e => e.IdHotel)
+                .HasMaxLength(20)
+                .IsFixedLength()
+                .HasColumnName("ID_Hotel");
+            entity.Property(e => e.Hotel)
+                .HasMaxLength(100)
+                .IsFixedLength();
+        });
+
         modelBuilder.Entity<MeaDCentralAgency>(entity =>
         {
             entity.HasKey(e => e.CentralAgency).HasName("PK__MEA_D_ce__D93D0CE42E5E3D16");
@@ -106,14 +154,13 @@ public partial class HotelDbContext : DbContext
 
         modelBuilder.Entity<MeaDHotelInterno>(entity =>
         {
-            entity.HasKey(e => e.IdHotel).HasName("PK__MEA_D_Ho__AE924C1C826548C9");
+            entity.HasKey(e => e.Hotel).HasName("PK__MEA_D_Ho__AE924C1C826548C9");
 
             entity.ToTable("MEA_D_Hotel_interno");
 
-            entity.Property(e => e.IdHotel)
+            entity.Property(e => e.Hotel)
                 .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("idHotel");
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<MeaDMarket>(entity =>
@@ -170,7 +217,7 @@ public partial class HotelDbContext : DbContext
 
             entity.HasIndex(e => e.Country, "fk_Reservas_D_Country1_idx");
 
-            entity.HasIndex(e => e.IdHotel, "fk_Reservas_D_Hotel_interno1_idx");
+            entity.HasIndex(e => e.Hotel, "fk_Reservas_D_Hotel_interno1_idx");
 
             entity.HasIndex(e => e.Market, "fk_Reservas_D_Market1_idx");
 
@@ -203,10 +250,9 @@ public partial class HotelDbContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false);
             entity.Property(e => e.DailyRate).HasColumnName("Daily_rate");
-            entity.Property(e => e.IdHotel)
+            entity.Property(e => e.Hotel)
                 .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("idHotel");
+                .IsUnicode(false);
             entity.Property(e => e.Market)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -248,8 +294,8 @@ public partial class HotelDbContext : DbContext
                 .HasForeignKey(d => d.Estrellas)
                 .HasConstraintName("fk_Reservas_D_Estrellas");
 
-            entity.HasOne(d => d.IdHotelNavigation).WithMany(p => p.MeaReservas)
-                .HasForeignKey(d => d.IdHotel)
+            entity.HasOne(d => d.HotelNavigation).WithMany(p => p.MeaReservas)
+                .HasForeignKey(d => d.Hotel)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Reservas_D_Hotel_interno1");
 
@@ -296,7 +342,6 @@ public partial class HotelDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("nombre_hotel");
             entity.Property(e => e.Precio).HasColumnName("precio");
-            entity.Property(e => e.Estrellas).HasColumnName("Estrellas");
         });
 
         modelBuilder.Entity<StageAnonimizado>(entity =>
@@ -342,6 +387,25 @@ public partial class HotelDbContext : DbContext
             entity.Property(e => e.StaysNet).HasColumnName("STAYS_NET");
         });
 
+        modelBuilder.Entity<StageApi>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Stage_API");
+
+            entity.Property(e => e.CheckIn).HasColumnName("Check_in");
+            entity.Property(e => e.Habitacion).HasMaxLength(2000);
+            entity.Property(e => e.IdHabitacion)
+                .HasMaxLength(20)
+                .HasColumnName("ID_Habitacion");
+            entity.Property(e => e.IdHotel)
+                .HasMaxLength(20)
+                .HasColumnName("ID_Hotel");
+            entity.Property(e => e.NombreHotel)
+                .HasMaxLength(100)
+                .HasColumnName("Nombre_Hotel");
+        });
+
         modelBuilder.Entity<StageApi1>(entity =>
         {
             entity
@@ -368,6 +432,28 @@ public partial class HotelDbContext : DbContext
             entity.Property(e => e.TipoDeCuarto)
                 .HasMaxLength(50)
                 .HasColumnName("Tipo_de_Cuarto");
+        });
+
+        modelBuilder.Entity<ThApi>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("TH_API");
+
+            entity.Property(e => e.CheckIn)
+                .HasColumnType("datetime")
+                .HasColumnName("Check_in");
+            entity.Property(e => e.Habitacion)
+                .HasMaxLength(2000)
+                .IsUnicode(false);
+            entity.Property(e => e.Hotel)
+                .HasMaxLength(300)
+                .IsUnicode(false);
+            entity.Property(e => e.IdHabitacion)
+                .HasMaxLength(30)
+                .IsFixedLength()
+                .HasColumnName("ID_Habitacion");
+            entity.Property(e => e.IdHotel).HasColumnName("ID_Hotel");
         });
 
         modelBuilder.Entity<TransformedDataUsedForEdum>(entity =>

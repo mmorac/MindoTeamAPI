@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using MindoTeamAPI.DataAccess;
 using MindoTeamAPI.Modelos;
 
@@ -7,6 +8,7 @@ namespace MindoTeamAPI.Controllers
     public class OfertasController : Controller
     {
         private readonly PruebasAPIDA pruebasAPIDA = new PruebasAPIDA();
+        private readonly StageAPIDA stageAPIDA = new();
 
         [HttpGet]
         [Route("/ofertas")]
@@ -34,6 +36,13 @@ namespace MindoTeamAPI.Controllers
         public List<PruebasApi> obtenerPruebasPorHotel(string Hotel)
         {
             return pruebasAPIDA.obtenerOfertasPorHotel(Hotel);
+        }
+
+        [HttpPost]
+        [Route("/ofertas/promedio")]
+        public Dictionary<string, float> obtenerPreciosPromedio(List<string> hoteles)
+        {
+            return stageAPIDA.obtenerPreciosPromedio(hoteles);
         }
 
         public IActionResult Index()

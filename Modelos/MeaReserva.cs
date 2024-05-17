@@ -19,7 +19,7 @@ public partial class MeaReserva
 
     public string RateCode { get; set; } = null!;
 
-    public string IdHotel { get; set; } = null!;
+    public string Hotel { get; set; } = null!;
 
     public string Market { get; set; } = null!;
 
@@ -45,7 +45,7 @@ public partial class MeaReserva
 
     public virtual MeaDEstrella? EstrellasNavigation { get; set; }
 
-    public virtual MeaDHotelInterno IdHotelNavigation { get; set; } = null!;
+    public virtual MeaDHotelInterno HotelNavigation { get; set; } = null!;
 
     public virtual MeaDMarket MarketNavigation { get; set; } = null!;
 

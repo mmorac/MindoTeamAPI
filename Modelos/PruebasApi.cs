@@ -15,5 +15,5 @@ public partial class PruebasApi
 
     public double? Precio { get; set; }
 
-    public int Estrellas { get; set; }
+    public int? Estrellas { get; set; }
 }
