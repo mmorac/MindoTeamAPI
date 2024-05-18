@@ -13,7 +13,7 @@ namespace MindoTeamAPI.DataAccess
 
         public List<StageApi> obtenerOfertasPorFecha(string fecha)
         {
-            List<StageApi> stageApis = _context.StageApis.Where(s => s.CheckIn.Equals(fecha)).ToList();
+            List<StageApi> stageApis = _context.StageApis.Where(s => s.CheckIn == DateOnly.ParseExact(fecha, "yyyy-MM-dd")).ToList();
             return stageApis;
         }
 
