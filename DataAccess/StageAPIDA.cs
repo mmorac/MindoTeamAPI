@@ -20,6 +20,9 @@ namespace MindoTeamAPI.DataAccess
         public List<StageApi> obtenerOfertasPorEstrellas(int estrellas)
         {
             List<StageApi> stageApis = _context.StageApis.Where(s => s.Estrellas == estrellas).ToList();
+            List<HotelesRequerido> hotelesRequeridos = _context.HotelesRequeridos.Where(h => h.Estrellas == estrellas).ToList();
+            List<string> idHotelesRequeridos = hotelesRequeridos.Select(hotel => hotel.IdHotel).ToList();
+            stageApis = stageApis.Where(hotel => idHotelesRequeridos.Contains(hotel.IdHotel)).ToList();
             return stageApis;
         }
 

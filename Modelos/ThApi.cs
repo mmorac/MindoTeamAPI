@@ -7,15 +7,19 @@ public partial class ThApi
 {
     public double? Precio { get; set; }
 
-    public DateTime? CheckIn { get; set; }
-
-    public string? Hotel { get; set; }
-
     public int? Estrella { get; set; }
 
-    public string? Habitacion { get; set; }
+    public int? IdCheckIn { get; set; }
 
-    public int? IdHotel { get; set; }
+    public string? IdHotel { get; set; }
 
-    public string? IdHabitacion { get; set; }
+    public int? IdHabitacion { get; set; }
+
+    public virtual MeDApiEstrella? EstrellaNavigation { get; set; }
+
+    public virtual MeDApiCheckIn? IdCheckInNavigation { get; set; }
+
+    public virtual MeDApiHabitacion? IdHabitacionNavigation { get; set; }
+
+    public virtual MeDApiHotel? IdHotelNavigation { get; set; }
 }

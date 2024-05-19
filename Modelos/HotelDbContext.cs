@@ -15,6 +15,10 @@ public partial class HotelDbContext : DbContext
     {
     }
 
+    public virtual DbSet<HotelesRequerido> HotelesRequeridos { get; set; }
+
+    public virtual DbSet<MeDApiCheckIn> MeDApiCheckIns { get; set; }
+
     public virtual DbSet<MeDApiEstrella> MeDApiEstrellas { get; set; }
 
     public virtual DbSet<MeDApiHabitacion> MeDApiHabitacions { get; set; }
@@ -61,6 +65,34 @@ public partial class HotelDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<HotelesRequerido>(entity =>
+        {
+            entity.HasKey(e => e.IdHotel).HasName("ID_Hotel_PK");
+
+            entity.ToTable("hoteles_requeridos");
+
+            entity.Property(e => e.IdHotel)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("ID_Hotel");
+            entity.Property(e => e.NombreHotel)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("Nombre_Hotel");
+        });
+
+        modelBuilder.Entity<MeDApiCheckIn>(entity =>
+        {
+            entity.HasKey(e => e.IdCheckIn);
+
+            entity.ToTable("ME_D_API_check_in");
+
+            entity.Property(e => e.IdCheckIn)
+                .ValueGeneratedNever()
+                .HasColumnName("ID_check_in");
+            entity.Property(e => e.CheckIn).HasColumnName("check_in");
+        });
+
         modelBuilder.Entity<MeDApiEstrella>(entity =>
         {
             entity.HasKey(e => e.Estrella).HasName("PK_ME_API_Estrella");
@@ -440,20 +472,28 @@ public partial class HotelDbContext : DbContext
                 .HasNoKey()
                 .ToTable("TH_API");
 
-            entity.Property(e => e.CheckIn)
-                .HasColumnType("datetime")
-                .HasColumnName("Check_in");
-            entity.Property(e => e.Habitacion)
-                .HasMaxLength(2000)
-                .IsUnicode(false);
-            entity.Property(e => e.Hotel)
-                .HasMaxLength(300)
-                .IsUnicode(false);
-            entity.Property(e => e.IdHabitacion)
-                .HasMaxLength(30)
+            entity.Property(e => e.IdCheckIn).HasColumnName("ID_Check_in");
+            entity.Property(e => e.IdHabitacion).HasColumnName("ID_Habitacion");
+            entity.Property(e => e.IdHotel)
+                .HasMaxLength(20)
                 .IsFixedLength()
-                .HasColumnName("ID_Habitacion");
-            entity.Property(e => e.IdHotel).HasColumnName("ID_Hotel");
+                .HasColumnName("ID_Hotel");
+
+            entity.HasOne(d => d.EstrellaNavigation).WithMany()
+                .HasForeignKey(d => d.Estrella)
+                .HasConstraintName("FK_TH_API_ME_D_API_Estrella1");
+
+            entity.HasOne(d => d.IdCheckInNavigation).WithMany()
+                .HasForeignKey(d => d.IdCheckIn)
+                .HasConstraintName("FK_TH_API_ME_D_API_check_in");
+
+            entity.HasOne(d => d.IdHabitacionNavigation).WithMany()
+                .HasForeignKey(d => d.IdHabitacion)
+                .HasConstraintName("FK_TH_API_ME_D_API_Habitacion");
+
+            entity.HasOne(d => d.IdHotelNavigation).WithMany()
+                .HasForeignKey(d => d.IdHotel)
+                .HasConstraintName("FK_TH_API_ME_D_API_Hotel");
         });
 
         modelBuilder.Entity<TransformedDataUsedForEdum>(entity =>
