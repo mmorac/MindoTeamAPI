@@ -26,13 +26,14 @@ namespace MindoTeamAPI.DataAccess
             return stageApis;
         }
 
-        public Dictionary<string, float> obtenerPreciosPromedio(List<string> hoteles)
+        public Dictionary<string, float> obtenerPreciosPromedio(int estrellas)
         {
+            List<HotelesRequerido> hotelesRequeridos = _context.HotelesRequeridos.Where(h => h.Estrellas == estrellas).ToList();
             Dictionary<string, float> promedios = new();
             List<StageApi> ofertas = new();
-            foreach(string h in hoteles)
+            foreach(HotelesRequerido h in hotelesRequeridos)
             {
-                ofertas.AddRange(_context.StageApis.Where(o => o.NombreHotel.Equals(h)).ToList());
+                ofertas.AddRange(_context.StageApis.Where(o => o.IdHotel == h.IdHotel).ToList());
             }
 
             var promediosPorFecha = ofertas
