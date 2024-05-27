@@ -23,6 +23,8 @@ namespace MindoTeamAPI.DataAccess
             List<HotelesRequerido> hotelesRequeridos = _context.HotelesRequeridos.Where(h => h.Estrellas == estrellas).ToList();
             List<string> idHotelesRequeridos = hotelesRequeridos.Select(hotel => hotel.IdHotel).ToList();
             stageApis = stageApis.Where(hotel => idHotelesRequeridos.Contains(hotel.IdHotel)).ToList();
+            stageApis = stageApis.Where(hotel => hotel.Precio > 0).ToList();
+            stageApis = stageApis.OrderBy(h => h.CheckIn).ThenBy(h => h.NombreHotel).ThenBy(h => h.Precio).ToList();
             return stageApis;
         }
 
