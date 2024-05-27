@@ -33,7 +33,7 @@ namespace MindoTeamAPI.DataAccess
             List<StageApi> ofertas = new();
             foreach(HotelesRequerido h in hotelesRequeridos)
             {
-                ofertas.AddRange(_context.StageApis.Where(o => o.IdHotel == h.IdHotel).ToList());
+                ofertas.AddRange(_context.StageApis.Where(o => o.IdHotel == h.IdHotel && o.Precio > 0).ToList());
             }
 
             var promediosPorFecha = ofertas
