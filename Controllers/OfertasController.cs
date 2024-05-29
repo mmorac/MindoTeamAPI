@@ -36,7 +36,7 @@ namespace MindoTeamAPI.Controllers
         [Route("/ofertas/promedios")]
         public Dictionary<string, float> obtenerPreciosPromedio([FromBody]int estrellas)
         {
-            return stageAPIDA.obtenerPreciosPromedio(estrellas);
+            return tHApiDA.obtenerPreciosPromedio(estrellas);
         }
 
         public IActionResult Index()
