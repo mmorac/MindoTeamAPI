@@ -80,6 +80,8 @@ namespace MindoTeamAPI.DataAccess
                 DateOnly fecha = (DateOnly)obj.Fecha;
                 promedios.Add(fecha.ToString("yyyy-MM-dd"), (float)Math.Round((decimal)obj.PrecioPromedio, 2));
             }
+
+            promedios = promedios.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
             return promedios;
 
         }
