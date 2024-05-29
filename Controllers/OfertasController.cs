@@ -8,6 +8,7 @@ namespace MindoTeamAPI.Controllers
     {
         private readonly PruebasAPIDA pruebasAPIDA = new PruebasAPIDA();
         private readonly StageAPIDA stageAPIDA = new();
+        private readonly THApiDA tHApiDA = new();
 
         [HttpGet]
         [Route("/ofertas")]
@@ -25,9 +26,9 @@ namespace MindoTeamAPI.Controllers
 
         [HttpPost]
         [Route("/ofertas/estrellas")]
-        public List<StageApi> obtenerPruebasPorEstrella([FromBody]int estrellas)
+        public IEnumerable<object> obtenerPruebasPorEstrella([FromBody]int estrellas)
         {
-            return stageAPIDA.obtenerOfertasPorEstrellas(estrellas);
+            return tHApiDA.obtenerOfertasPorEstrellas(estrellas);
         }
 
 
